@@ -4,15 +4,13 @@ export interface Note {
   content: string;
   createdAt: string;
   updatedAt: string;
-  tag: string;
+  tag: NoteTag;
 }
 
 export type NoteTag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 
-export type SortBy = 'created' | 'updated';
-
 export interface CreatedNote {
   title: string;
   content: string;
-  tag: string;
+  tag: NoteTag;
 }

@@ -14,7 +14,7 @@ interface NoteFormProps {
 interface NoteFormValues {
   title: string;
   content: string;
-  tag: string;
+  tag: NoteTag;
 }
 
 const initialValues: NoteFormValues = {
