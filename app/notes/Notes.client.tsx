@@ -1,6 +1,5 @@
 'use client';
 
-import Modal from '@/components/Modal/Modal';
 import NoteForm from '@/components/NoteForm/NoteForm';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
@@ -12,6 +11,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { BeatLoader } from 'react-spinners';
 import { useDebouncedCallback } from 'use-debounce';
 import css from './NotesClient.module.css';
+import Modal from '@/components/Modal/Modal';
 
 export const NotesClient = () => {
   const [currentPage, setCurrentPage] = useState(1);
