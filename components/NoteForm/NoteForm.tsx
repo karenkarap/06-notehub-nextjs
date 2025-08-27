@@ -1,7 +1,7 @@
 import css from './NoteForm.module.css';
 import * as Yup from 'yup';
 import { Form, Formik, Field, ErrorMessage, type FormikHelpers } from 'formik';
-import type { CreatedNote, NoteTag } from '../../types/note';
+import type { NoteTag } from '../../types/note';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import toast from 'react-hot-toast';
@@ -25,7 +25,7 @@ const initialValues: NoteFormValues = {
 
 const tags: NoteTag[] = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
 
-const NoteForSchema = Yup.object().shape({
+const NoteFormSchema = Yup.object().shape({
   title: Yup.string()
     .trim()
     .min(3, 'Title is too short')
@@ -39,21 +39,22 @@ function NoteForm({ closeModal }: NoteFormProps) {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: (value: CreatedNote) => createNote(value),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
-      closeModal();
-    },
+    mutationFn: (value: NoteFormValues) => createNote(value),
     onError: () => toast.error('Something went wrong'),
   });
 
   const handleSubmit = (values: NoteFormValues, actions: FormikHelpers<NoteFormValues>) => {
-    mutate(values);
-    actions.resetForm();
+    mutate(values, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['notes'] });
+        closeModal();
+        actions.resetForm();
+      },
+    });
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={NoteForSchema}>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={NoteFormSchema}>
       {(props) => {
         return (
           <Form className={css.form}>
@@ -86,7 +87,7 @@ function NoteForm({ closeModal }: NoteFormProps) {
                 Cancel
               </button>
               <button type="submit" className={css.submitButton} disabled={!props.isValid}>
-                {props.isSubmitting ? 'Submiting ...' : 'Create note'}
+                {props.isSubmitting ? 'Submitting ...' : 'Create note'}
               </button>
             </div>
           </Form>

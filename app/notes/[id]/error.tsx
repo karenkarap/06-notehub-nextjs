@@ -7,9 +7,7 @@ interface ErrorProps {
 function Error({ error }: ErrorProps) {
   return (
     <div>
-      <p>
-        <p>Could not fetch note details. {error.message}</p>
-      </p>
+      <p>Could not fetch note details. {error.message}</p>
     </div>
   );
 }
